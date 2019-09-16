@@ -46,7 +46,7 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        final View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         Button signUpButton = view.findViewById(R.id.sign_up_button);
         final TextInputEditText emailET = view.findViewById(R.id.email_editText);
         final TextInputEditText usernameET = view.findViewById(R.id.username_edit_text);
@@ -78,8 +78,8 @@ public class SignUpFragment extends Fragment {
                     confirmPasswordETLayout.setCounterTextColor(ColorStateList.valueOf(Color.GREEN));
                 } else {
                     confirmPasswordETLayout.setHelperText(" ");
-                    confirmPasswordETLayout.setHelperTextColor(ColorStateList.valueOf(Color.GREEN));
-                    confirmPasswordETLayout.setCounterTextColor(ColorStateList.valueOf(Color.GREEN));
+                    confirmPasswordETLayout.setHelperTextColor(ColorStateList.valueOf(view.getContext().getResources().getColor(R.color.colorGreen)));
+                    confirmPasswordETLayout.setCounterTextColor(ColorStateList.valueOf(view.getContext().getResources().getColor(R.color.colorGreen)));
                 }
             }
 
