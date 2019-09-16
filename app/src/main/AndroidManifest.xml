@@ -12,8 +12,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".AboutActivity"
+            android:label="About"
             android:parentActivityName=".DashboardActivity"
-            android:label="About"/>
+            android:theme="@style/DashboardTheme" />
         <activity
             android:name=".DashboardActivity"
             android:launchMode="singleInstance"

@@ -33,7 +33,6 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        getSupportActionBar().setTitle("Registo");
 
         final TextView usernameTV = findViewById(R.id.username_text_view);
         final TextView emailTV = findViewById(R.id.email_text_view);

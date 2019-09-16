@@ -3,4 +3,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about_developer_string">I am Segun Francis an android developer as well as an intern in the HNG programme.  My Hobbies include sleeping, playing video games and learning new things.</string>
+    <string name="about_app_string">Registo is an authentication application that was created in fulfilment of task 2 of the HNG internship.  The app authenticate users and displays their details in the dashboard activity.  It makes use of firebase authentication and database to store users\' information.</string>
 </resources>
