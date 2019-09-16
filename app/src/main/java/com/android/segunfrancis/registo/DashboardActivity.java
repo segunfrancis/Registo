@@ -30,6 +30,7 @@ public class DashboardActivity extends AppCompatActivity {
                 return true;
             case R.id.action_logout:
                 FirebaseUtil.logout(DashboardActivity.this);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

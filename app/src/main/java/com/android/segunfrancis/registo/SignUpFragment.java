@@ -37,6 +37,7 @@ public class SignUpFragment extends Fragment {
         final TextInputEditText usernameET = view.findViewById(R.id.username_edit_text);
         final TextInputEditText passwordET = view.findViewById(R.id.password_edit_text);
         final TextInputEditText confirmPasswordET = view.findViewById(R.id.confirm_password_editText);
+        final TextInputEditText phoneNumberET = view.findViewById(R.id.phone_number_edit_text);
 
         final TextInputLayout emailETLayout = view.findViewById(R.id.emailET);
         final TextInputLayout passwordETLayout = view.findViewById(R.id.passwordET);
@@ -79,14 +80,17 @@ public class SignUpFragment extends Fragment {
             public void onClick(View view) {
                 String email = emailET.getText().toString().trim();
                 String username = usernameET.getText().toString().trim();
+                String phoneNumber = phoneNumberET.getText().toString().trim();
                 String password = passwordET.getText().toString().trim();
                 String confirmPassword = confirmPasswordET.getText().toString().trim();
 
-                if (FirebaseUtil.isEmpty(email) || FirebaseUtil.isEmpty(username) ||
-                        FirebaseUtil.isEmpty(password) || FirebaseUtil.isEmpty(confirmPassword)) {
+                if (FirebaseUtil.isEmpty(email) || FirebaseUtil.isEmpty(username) || FirebaseUtil.isEmpty(password)
+                        || FirebaseUtil.isEmpty(confirmPassword) || FirebaseUtil.isEmpty(phoneNumber)) {
                     Toast.makeText(view.getContext(), "All Fields are required", Toast.LENGTH_SHORT).show();
                 } else if (!FirebaseUtil.emailType(email)) {
                     Toast.makeText(view.getContext(), "Wrong Email Pattern", Toast.LENGTH_SHORT).show();
+                } else if (!FirebaseUtil.phoneType(phoneNumber)) {
+                    Toast.makeText(view.getContext(), "Wrong Phone Number Pattern", Toast.LENGTH_SHORT).show();
                 } else if (!TextUtils.equals(password, confirmPassword)) {
                     Toast.makeText(view.getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
                 } else if (FirebaseUtil.isShort(password) || FirebaseUtil.isShort(confirmPassword)) {

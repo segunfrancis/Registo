@@ -113,10 +113,6 @@ public class FirebaseUtil {
         ((Activity)(context)).finish();
     }
 
-    public static boolean checkAuthState() {
-        return false;
-    }
-
     static void hideSoftKeyboard(Context context, View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -128,6 +124,10 @@ public class FirebaseUtil {
 
     static boolean emailType(String emailAddress) {
         return emailAddress.matches(Patterns.EMAIL_ADDRESS.toString());
+    }
+
+    static boolean phoneType(String phoneNumber) {
+        return phoneNumber.matches(Patterns.PHONE.toString());
     }
 
     static boolean isShort(String password) {

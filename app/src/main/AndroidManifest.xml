@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".DashboardActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/DashboardTheme" />
         <activity android:name=".MainActivity">
             <intent-filter>
