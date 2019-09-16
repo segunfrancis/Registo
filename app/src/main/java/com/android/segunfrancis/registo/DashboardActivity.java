@@ -2,7 +2,11 @@ package com.android.segunfrancis.registo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +33,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        getSupportActionBar().setTitle("Registo");
 
         final TextView usernameTV = findViewById(R.id.username_text_view);
         final TextView emailTV = findViewById(R.id.email_text_view);
@@ -38,6 +43,7 @@ public class DashboardActivity extends AppCompatActivity {
         mFrameLayout2 = findViewById(R.id.shimmer2);
         mFrameLayout3 = findViewById(R.id.shimmer3);
 
+        // Start Shimmer Effect
         mFrameLayout1.startShimmer();
         mFrameLayout2.startShimmer();
         mFrameLayout3.startShimmer();
@@ -53,10 +59,10 @@ public class DashboardActivity extends AppCompatActivity {
                 emailTV.setText(email);
                 telephoneTV.setText(phoneNumber);
 
+                // Stop and hide Shimmer Effect
                 mFrameLayout1.stopShimmer();
                 mFrameLayout2.stopShimmer();
                 mFrameLayout3.stopShimmer();
-
                 mFrameLayout1.setVisibility(View.GONE);
                 mFrameLayout2.setVisibility(View.GONE);
                 mFrameLayout3.setVisibility(View.GONE);
@@ -80,7 +86,7 @@ public class DashboardActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_about:
-                // TODO: create about fragment
+                startActivity(new Intent(this, AboutActivity.class));
                 return true;
             case R.id.action_logout:
                 Utils.logout(DashboardActivity.this);
