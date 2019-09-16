@@ -75,7 +75,7 @@ public class SignUpFragment extends Fragment {
                 } else if (confirmPasswordET.getText().length() >= 6 && !TextUtils.equals(passwordET.getText(), confirmPasswordET.getText())) {
                     confirmPasswordETLayout.setHelperText("Password does not match the one above");
                     confirmPasswordETLayout.setHelperTextColor(ColorStateList.valueOf(Color.RED));
-                    confirmPasswordETLayout.setCounterTextColor(ColorStateList.valueOf(Color.GREEN));
+                    confirmPasswordETLayout.setCounterTextColor(ColorStateList.valueOf(view.getContext().getResources().getColor(R.color.colorGreen)));
                 } else {
                     confirmPasswordETLayout.setHelperText(" ");
                     confirmPasswordETLayout.setHelperTextColor(ColorStateList.valueOf(view.getContext().getResources().getColor(R.color.colorGreen)));
