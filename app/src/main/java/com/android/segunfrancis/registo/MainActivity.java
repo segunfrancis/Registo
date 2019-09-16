@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setText("Login");
         tabLayout.getTabAt(1).setText("Sign Up");
+        tabLayout.setTabTextColors(R.color.colorAccent, Color.WHITE);
     }
 
     private void setUpFirebaseAuth() {

@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +21,9 @@ public class DashboardActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     DatabaseReference mReference = FirebaseDatabase.getInstance().getReference("user-data").child(mAuth.getCurrentUser().getUid());
+    ShimmerFrameLayout mFrameLayout1;
+    ShimmerFrameLayout mFrameLayout2;
+    ShimmerFrameLayout mFrameLayout3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,14 @@ public class DashboardActivity extends AppCompatActivity {
         final TextView usernameTV = findViewById(R.id.username_text_view);
         final TextView emailTV = findViewById(R.id.email_text_view);
         final TextView telephoneTV = findViewById(R.id.telephone_text_view);
+
+        mFrameLayout1 = findViewById(R.id.shimmer1);
+        mFrameLayout2 = findViewById(R.id.shimmer2);
+        mFrameLayout3 = findViewById(R.id.shimmer3);
+
+        mFrameLayout1.startShimmer();
+        mFrameLayout2.startShimmer();
+        mFrameLayout3.startShimmer();
 
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -39,6 +52,14 @@ public class DashboardActivity extends AppCompatActivity {
                 usernameTV.setText(username);
                 emailTV.setText(email);
                 telephoneTV.setText(phoneNumber);
+
+                mFrameLayout1.stopShimmer();
+                mFrameLayout2.stopShimmer();
+                mFrameLayout3.stopShimmer();
+
+                mFrameLayout1.setVisibility(View.GONE);
+                mFrameLayout2.setVisibility(View.GONE);
+                mFrameLayout3.setVisibility(View.GONE);
             }
 
             @Override

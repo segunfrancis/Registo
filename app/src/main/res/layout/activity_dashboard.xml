@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Welcome to Registro"
+        android:text="Welcome to Registo"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,35 +65,101 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:shimmer_colored="true"
+        app:shimmer_base_color="@android:color/darker_gray"
+        app:shimmer_highlight_color="@android:color/white"
+        app:shimmer_duration="1200"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView3">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:src="@drawable/button_background_default"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
     <TextView
         android:id="@+id/username_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        tools:text="Mobile Techie"
         app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3"
-        tools:text="Mobile Techie" />
+        app:layout_constraintTop_toTopOf="@+id/textView3"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:shimmer_colored="true"
+        app:shimmer_base_color="@android:color/darker_gray"
+        app:shimmer_highlight_color="@android:color/white"
+        app:shimmer_duration="1200"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/textView4">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:src="@drawable/button_background_default"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <TextView
         android:id="@+id/email_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        tools:text="john234@gmail.com"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4"
-        tools:text="john234@gmail.com" />
+        app:layout_constraintTop_toTopOf="@+id/textView4"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:shimmer_colored="true"
+        app:shimmer_base_color="@android:color/darker_gray"
+        app:shimmer_highlight_color="@android:color/white"
+        app:shimmer_duration="1200"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/textView5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:src="@drawable/button_background_default"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 
     <TextView
         android:id="@+id/telephone_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        tools:text="08179246712"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/textView5"
-        tools:text="08179246712" />
+        app:layout_constraintTop_toTopOf="@+id/textView5"/>
 
     <View
         android:id="@+id/view"
