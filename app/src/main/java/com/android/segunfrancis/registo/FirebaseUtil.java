@@ -126,8 +126,8 @@ public class FirebaseUtil {
         return emailAddress.matches(Patterns.EMAIL_ADDRESS.toString());
     }
 
-    static boolean phoneType(String phoneNumber) {
-        return phoneNumber.matches(Patterns.PHONE.toString());
+    static boolean phoneNumberIsOK(String phoneNumber) {
+        return phoneNumber.length() == 11;
     }
 
     static boolean isShort(String password) {

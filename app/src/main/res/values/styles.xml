@@ -14,4 +14,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="splashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/android_icon</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

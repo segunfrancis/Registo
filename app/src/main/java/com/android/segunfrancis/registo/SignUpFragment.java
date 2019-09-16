@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -89,8 +88,10 @@ public class SignUpFragment extends Fragment {
                     Toast.makeText(view.getContext(), "All Fields are required", Toast.LENGTH_SHORT).show();
                 } else if (!FirebaseUtil.emailType(email)) {
                     Toast.makeText(view.getContext(), "Wrong Email Pattern", Toast.LENGTH_SHORT).show();
-                } else if (!FirebaseUtil.phoneType(phoneNumber)) {
-                    Toast.makeText(view.getContext(), "Wrong Phone Number Pattern", Toast.LENGTH_SHORT).show();
+                    emailET.requestFocus();
+                } else if (!FirebaseUtil.phoneNumberIsOK(phoneNumber)) {
+                    Toast.makeText(view.getContext(), "Check Phone Number", Toast.LENGTH_SHORT).show();
+                    phoneNumberET.requestFocus();
                 } else if (!TextUtils.equals(password, confirmPassword)) {
                     Toast.makeText(view.getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
                 } else if (FirebaseUtil.isShort(password) || FirebaseUtil.isShort(confirmPassword)) {
