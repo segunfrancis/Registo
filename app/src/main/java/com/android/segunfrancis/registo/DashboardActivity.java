@@ -15,9 +15,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DashboardActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -35,15 +32,13 @@ public class DashboardActivity extends AppCompatActivity {
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    UserModel model = dataSnapshot.getValue(UserModel.class);
-                    String username = model.getUsername();
-                    String email = model.getEmail();
-                    String phoneNumber = model.getTelephone();
-                    usernameTV.setText(username);
-                    emailTV.setText(email);
-                    telephoneTV.setText(phoneNumber);
-//                }
+                UserModel model = dataSnapshot.getValue(UserModel.class);
+                String username = model.getUsername();
+                String email = model.getEmail();
+                String phoneNumber = model.getTelephone();
+                usernameTV.setText(username);
+                emailTV.setText(email);
+                telephoneTV.setText(phoneNumber);
             }
 
             @Override
@@ -67,7 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
                 // TODO: create about fragment
                 return true;
             case R.id.action_logout:
-                FirebaseUtil.logout(DashboardActivity.this);
+                Utils.logout(DashboardActivity.this);
                 finish();
                 return true;
             default:

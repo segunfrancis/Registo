@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +54,7 @@ public class LoginFragment extends Fragment {
         Button loginButton = view.findViewById(R.id.sign_in_button);
         pb = view.findViewById(R.id.login_progress_bar);
 
-        FirebaseUtil.checkPasswordLength(passwordET, passwordETLayout);
+        Utils.checkPasswordLength(passwordET, passwordETLayout);
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -63,13 +62,13 @@ public class LoginFragment extends Fragment {
             public void onClick(final View view) {
                 String email = emailET.getText().toString().trim();
                 String password = passwordET.getText().toString().trim();
-                FirebaseUtil.hideSoftKeyboard(getContext(), view);
+                Utils.hideSoftKeyboard(getContext(), view);
 
-                if (FirebaseUtil.isEmpty(email)|| FirebaseUtil.isEmpty(password)) {
+                if (Utils.isEmpty(email)|| Utils.isEmpty(password)) {
                     Toast.makeText(view.getContext(), "All Fields are required", Toast.LENGTH_SHORT).show();
-                } else if (!FirebaseUtil.emailType(email)) {
+                } else if (!Utils.emailType(email)) {
                     emailETLayout.setError("Wrong Email Pattern");
-                } else if (FirebaseUtil.isShort(password)) {
+                } else if (Utils.isShort(password)) {
                     Toast.makeText(view.getContext(), "Password is too short", Toast.LENGTH_SHORT).show();
                 } else {
                     showProgressBar();
@@ -96,7 +95,7 @@ public class LoginFragment extends Fragment {
                                     }
                                 }
                             });
-                    FirebaseUtil.hideSoftKeyboard(getContext(), view);
+                    Utils.hideSoftKeyboard(getContext(), view);
                 }
             }
         });

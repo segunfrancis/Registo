@@ -70,12 +70,14 @@
 
         <Button
             android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:text="Sign In"
             android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_background_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/passwordET_layout"
             app:layout_constraintStart_toStartOf="@+id/passwordET_layout"

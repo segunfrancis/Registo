@@ -28,9 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 
-public class FirebaseUtil {
+public class Utils {
 
-    private static final String TAG = "FirebaseUtil";
+    private static final String TAG = "Utils";
 
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static FirebaseAuth.AuthStateListener sAuthStateListener;

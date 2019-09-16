@@ -21,8 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -62,7 +60,7 @@ public class SignUpFragment extends Fragment {
 
         pb = view.findViewById(R.id.sign_up_progress_bar);
 
-        FirebaseUtil.checkPasswordLength(passwordET, passwordETLayout);
+        Utils.checkPasswordLength(passwordET, passwordETLayout);
 
         confirmPasswordET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -101,23 +99,23 @@ public class SignUpFragment extends Fragment {
                 String password = passwordET.getText().toString().trim();
                 String confirmPassword = confirmPasswordET.getText().toString().trim();
 
-                if (FirebaseUtil.isEmpty(email) || FirebaseUtil.isEmpty(username) || FirebaseUtil.isEmpty(password)
-                        || FirebaseUtil.isEmpty(confirmPassword) || FirebaseUtil.isEmpty(phoneNumber)) {
+                if (Utils.isEmpty(email) || Utils.isEmpty(username) || Utils.isEmpty(password)
+                        || Utils.isEmpty(confirmPassword) || Utils.isEmpty(phoneNumber)) {
                     Toast.makeText(view.getContext(), "All Fields are required", Toast.LENGTH_SHORT).show();
-                } else if (!FirebaseUtil.emailType(email)) {
+                } else if (!Utils.emailType(email)) {
                     Toast.makeText(view.getContext(), "Wrong Email Pattern", Toast.LENGTH_SHORT).show();
                     emailET.requestFocus();
-                } else if (!FirebaseUtil.phoneNumberIsOK(phoneNumber)) {
+                } else if (!Utils.phoneNumberIsOK(phoneNumber)) {
                     Toast.makeText(view.getContext(), "Check Phone Number", Toast.LENGTH_SHORT).show();
                     phoneNumberET.requestFocus();
                 } else if (!TextUtils.equals(password, confirmPassword)) {
                     Toast.makeText(view.getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-                } else if (FirebaseUtil.isShort(password) || FirebaseUtil.isShort(confirmPassword)) {
+                } else if (Utils.isShort(password) || Utils.isShort(confirmPassword)) {
                     Toast.makeText(view.getContext(), "Password is too short", Toast.LENGTH_SHORT).show();
                 } else {
                     showProgressBar();
                     mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
@@ -134,7 +132,7 @@ public class SignUpFragment extends Fragment {
                                         mReference.setValue(model);
                                         Intent intent = new Intent(view.getContext(), DashboardActivity.class);
                                         view.getContext().startActivity(intent);
-                                        ((Activity)(view.getContext())).finish();
+                                        ((Activity) (view.getContext())).finish();
                                         hideProgressBar();
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -145,7 +143,7 @@ public class SignUpFragment extends Fragment {
                                     }
                                 }
                             });
-                    FirebaseUtil.hideSoftKeyboard(getContext(), view);
+                    Utils.hideSoftKeyboard(getContext(), view);
                 }
             }
         });
