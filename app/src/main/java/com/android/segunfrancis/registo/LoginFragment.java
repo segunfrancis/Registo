@@ -1,11 +1,15 @@
 package com.android.segunfrancis.registo;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +17,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 
 
 /**
@@ -22,6 +32,9 @@ import com.google.android.material.textfield.TextInputLayout;
  */
 public class LoginFragment extends Fragment {
 
+    private static final String TAG = "LoginFragment";
+    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private ProgressBar pb;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -40,14 +53,14 @@ public class LoginFragment extends Fragment {
         TextInputLayout passwordETLayout = view.findViewById(R.id.passwordET_layout);
 
         Button loginButton = view.findViewById(R.id.sign_in_button);
-        final ProgressBar pb = view.findViewById(R.id.login_progress_bar);
+        pb = view.findViewById(R.id.login_progress_bar);
 
         FirebaseUtil.checkPasswordLength(passwordET, passwordETLayout);
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 String email = emailET.getText().toString().trim();
                 String password = passwordET.getText().toString().trim();
                 FirebaseUtil.hideSoftKeyboard(getContext(), view);
@@ -59,12 +72,44 @@ public class LoginFragment extends Fragment {
                 } else if (FirebaseUtil.isShort(password)) {
                     Toast.makeText(view.getContext(), "Password is too short", Toast.LENGTH_SHORT).show();
                 } else {
-                    FirebaseUtil.signIn(email, password, getContext());
+                    showProgressBar();
+                    mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "signInWithEmail:success");
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        FirebaseUserMetadata metadata = FirebaseAuth.getInstance().getCurrentUser().getMetadata();
+                                        Toast.makeText(view.getContext(), "Signed in as " + user.getUid(), Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(view.getContext(), DashboardActivity.class);
+                                        view.getContext().startActivity(intent);
+                                        ((Activity)(view.getContext())).finish();
+                                        hideProgressBar();
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                        Toast.makeText(view.getContext(), "Authentication failed. " + task.getException(),
+                                                Toast.LENGTH_SHORT).show();
+                                        hideProgressBar();
+                                    }
+                                }
+                            });
                     FirebaseUtil.hideSoftKeyboard(getContext(), view);
-                    FirebaseUtil.showProgressBar(pb);
                 }
             }
         });
         return view;
+    }
+
+    private void showProgressBar() {
+        pb.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        if (pb.getVisibility() == View.VISIBLE) {
+            pb.setVisibility(View.GONE);
+        }
     }
 }

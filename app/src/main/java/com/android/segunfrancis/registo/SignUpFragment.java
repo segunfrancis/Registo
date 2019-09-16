@@ -1,14 +1,18 @@
 package com.android.segunfrancis.registo;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +20,17 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpFragment extends Fragment {
 
@@ -25,6 +38,11 @@ public class SignUpFragment extends Fragment {
         // Required empty public constructor
     }
 
+    FirebaseDatabase mFirebaseDatabase;
+    DatabaseReference mReference;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private ProgressBar pb;
+    private static final String TAG = "SignUpFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +60,7 @@ public class SignUpFragment extends Fragment {
         final TextInputLayout passwordETLayout = view.findViewById(R.id.passwordET);
         final TextInputLayout confirmPasswordETLayout = view.findViewById(R.id.confirm_passwordET);
 
-        final ProgressBar pb = view.findViewById(R.id.sign_up_progress_bar);
+        pb = view.findViewById(R.id.sign_up_progress_bar);
 
         FirebaseUtil.checkPasswordLength(passwordET, passwordETLayout);
 
@@ -76,10 +94,10 @@ public class SignUpFragment extends Fragment {
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String email = emailET.getText().toString().trim();
-                String username = usernameET.getText().toString().trim();
-                String phoneNumber = phoneNumberET.getText().toString().trim();
+            public void onClick(final View view) {
+                final String email = emailET.getText().toString().trim();
+                final String username = usernameET.getText().toString().trim();
+                final String phoneNumber = phoneNumberET.getText().toString().trim();
                 String password = passwordET.getText().toString().trim();
                 String confirmPassword = confirmPasswordET.getText().toString().trim();
 
@@ -97,12 +115,50 @@ public class SignUpFragment extends Fragment {
                 } else if (FirebaseUtil.isShort(password) || FirebaseUtil.isShort(confirmPassword)) {
                     Toast.makeText(view.getContext(), "Password is too short", Toast.LENGTH_SHORT).show();
                 } else {
-                    FirebaseUtil.SignUp(email, password, getContext());
+                    showProgressBar();
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "createUserWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        Toast.makeText(view.getContext(), "Authenticated as " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                                        mFirebaseDatabase = FirebaseDatabase.getInstance();
+                                        mReference = mFirebaseDatabase.getReference("user-data").child(mAuth.getCurrentUser().getUid());
+                                        UserModel model = new UserModel();
+                                        model.setEmail(email);
+                                        model.setUsername(username);
+                                        model.setTelephone(phoneNumber);
+                                        mReference.setValue(model);
+                                        Intent intent = new Intent(view.getContext(), DashboardActivity.class);
+                                        view.getContext().startActivity(intent);
+                                        ((Activity)(view.getContext())).finish();
+                                        hideProgressBar();
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(view.getContext(), "Authentication failed. " + task.getException(),
+                                                Toast.LENGTH_SHORT).show();
+                                        hideProgressBar();
+                                    }
+                                }
+                            });
                     FirebaseUtil.hideSoftKeyboard(getContext(), view);
-                    FirebaseUtil.showProgressBar(pb);
                 }
             }
         });
         return view;
+    }
+
+    private void showProgressBar() {
+        pb.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        if (pb.getVisibility() == View.VISIBLE) {
+            pb.setVisibility(View.GONE);
+        }
     }
 }
