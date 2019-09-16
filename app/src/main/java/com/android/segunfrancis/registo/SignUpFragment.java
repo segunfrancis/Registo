@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,35 +34,17 @@ public class SignUpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         Button button = view.findViewById(R.id.sign_up_button);
         final TextInputEditText emailET = view.findViewById(R.id.email_editText);
+        final TextInputEditText usernameET = view.findViewById(R.id.username_edit_text);
         final TextInputEditText passwordET = view.findViewById(R.id.password_edit_text);
         final TextInputEditText confirmPasswordET = view.findViewById(R.id.confirm_password_editText);
 
+        final TextInputLayout emailETLayout = view.findViewById(R.id.emailET);
         final TextInputLayout passwordETLayout = view.findViewById(R.id.passwordET);
         final TextInputLayout confirmPasswordETLayout = view.findViewById(R.id.confirm_passwordET);
 
-        passwordET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int count) {
+        final ProgressBar pb = view.findViewById(R.id.sign_up_progress_bar);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int count) {
-                if (passwordET.getText().length() < 6) {
-                    passwordETLayout.setError("Too short");
-                    passwordETLayout.setCounterTextColor(ColorStateList.valueOf(Color.RED));
-                } else {
-                    passwordETLayout.setHelperText(" ");
-                    passwordETLayout.setHelperTextColor(ColorStateList.valueOf(Color.GREEN));
-                    passwordETLayout.setCounterTextColor(ColorStateList.valueOf(Color.GREEN));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        FirebaseUtil.checkPasswordLength(passwordET, passwordETLayout);
 
         confirmPasswordET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -73,7 +57,7 @@ public class SignUpFragment extends Fragment {
                 if (confirmPasswordET.getText().length() < 6) {
                     confirmPasswordETLayout.setError("Too short");
                     confirmPasswordETLayout.setCounterTextColor(ColorStateList.valueOf(Color.RED));
-                } else if (confirmPasswordET.getText().length() >= 6 &&  !TextUtils.equals(passwordET.getText(), confirmPasswordET.getText())) {
+                } else if (confirmPasswordET.getText().length() >= 6 && !TextUtils.equals(passwordET.getText(), confirmPasswordET.getText())) {
                     confirmPasswordETLayout.setHelperText("Password does not match the one above");
                     confirmPasswordETLayout.setHelperTextColor(ColorStateList.valueOf(Color.RED));
                     confirmPasswordETLayout.setCounterTextColor(ColorStateList.valueOf(Color.GREEN));
@@ -93,10 +77,25 @@ public class SignUpFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailET.getText().toString();
-                String password = passwordET.getText().toString();
+                String email = emailET.getText().toString().trim();
+                String username = usernameET.getText().toString().trim();
+                String password = passwordET.getText().toString().trim();
+                String confirmPassword = confirmPasswordET.getText().toString().trim();
 
-                FirebaseUtil.SignUp(email, password, getContext());
+                if (FirebaseUtil.isEmpty(email) || FirebaseUtil.isEmpty(username) ||
+                        FirebaseUtil.isEmpty(password) || FirebaseUtil.isEmpty(confirmPassword)) {
+                    Toast.makeText(view.getContext(), "All Fields are required", Toast.LENGTH_SHORT).show();
+                } else if (!FirebaseUtil.emailType(email)) {
+                    Toast.makeText(view.getContext(), "Wrong Email Pattern", Toast.LENGTH_SHORT).show();
+                } else if (!TextUtils.equals(password, confirmPassword)) {
+                    Toast.makeText(view.getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                } else if (FirebaseUtil.isShort(password) || FirebaseUtil.isShort(confirmPassword)) {
+                    Toast.makeText(view.getContext(), "Password is too short", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseUtil.SignUp(email, password, getContext());
+                    FirebaseUtil.hideSoftKeyboard(getContext(), view);
+                    FirebaseUtil.showProgressBar(pb);
+                }
             }
         });
         return view;

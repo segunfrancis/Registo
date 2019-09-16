@@ -1,11 +1,18 @@
 package com.android.segunfrancis.registo;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +31,7 @@ public class FirebaseUtil {
     private static final String TAG = "FirebaseUtil";
 
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private static FirebaseAuth.AuthStateListener sAuthStateListener;
 
     public static void signIn(String email, String password, final Context context) {
         mAuth.signInWithEmailAndPassword(email, password)
@@ -36,6 +44,9 @@ public class FirebaseUtil {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             FirebaseUserMetadata metadata = FirebaseAuth.getInstance().getCurrentUser().getMetadata();
                             Toast.makeText(context.getApplicationContext(), "Signed in as " + user.getUid(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context.getApplicationContext(), DashboardActivity.class);
+                            context.startActivity(intent);
+                            ((Activity)(context)).finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -56,6 +67,9 @@ public class FirebaseUtil {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(context.getApplicationContext(), "Authenticated as " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context.getApplicationContext(), DashboardActivity.class);
+                            context.startActivity(intent);
+                            ((Activity)(context)).finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -93,11 +107,38 @@ public class FirebaseUtil {
 
     }
 
-    public static void logout() {
-
+    public static void logout(Context context) {
+        mAuth.signOut();
+        context.startActivity(new Intent(context.getApplicationContext(), MainActivity.class));
+        ((Activity)(context)).finish();
     }
 
     public static boolean checkAuthState() {
         return false;
+    }
+
+    static void hideSoftKeyboard(Context context, View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    static boolean isEmpty(String s) {
+        return TextUtils.isEmpty(s);
+    }
+
+    static boolean emailType(String emailAddress) {
+        return emailAddress.matches(Patterns.EMAIL_ADDRESS.toString());
+    }
+
+    static boolean isShort(String password) {
+        return password.length() < 6;
+    }
+
+    static void showProgressBar(ProgressBar progressBar) {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    static void hideProgressBar(ProgressBar progressBar) {
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }
