@@ -36,9 +36,9 @@ public class SignUpFragment extends Fragment {
         // Required empty public constructor
     }
 
-    FirebaseDatabase mFirebaseDatabase;
-    DatabaseReference mReference;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mReference;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ProgressBar pb;
     private static final String TAG = "SignUpFragment";
 
@@ -47,20 +47,19 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        Button button = view.findViewById(R.id.sign_up_button);
+        Button signUpButton = view.findViewById(R.id.sign_up_button);
         final TextInputEditText emailET = view.findViewById(R.id.email_editText);
         final TextInputEditText usernameET = view.findViewById(R.id.username_edit_text);
         final TextInputEditText passwordET = view.findViewById(R.id.password_edit_text);
         final TextInputEditText confirmPasswordET = view.findViewById(R.id.confirm_password_editText);
         final TextInputEditText phoneNumberET = view.findViewById(R.id.phone_number_edit_text);
 
-        final TextInputLayout emailETLayout = view.findViewById(R.id.emailET);
         final TextInputLayout passwordETLayout = view.findViewById(R.id.passwordET);
         final TextInputLayout confirmPasswordETLayout = view.findViewById(R.id.confirm_passwordET);
 
         pb = view.findViewById(R.id.sign_up_progress_bar);
 
-        Utils.checkPasswordLength(passwordET, passwordETLayout);
+        Utils.checkPasswordLength(passwordET, passwordETLayout, view.getContext());
 
         confirmPasswordET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -90,7 +89,8 @@ public class SignUpFragment extends Fragment {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+        // Creating a new user
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 final String email = emailET.getText().toString().trim();
@@ -126,6 +126,8 @@ public class SignUpFragment extends Fragment {
                                         mFirebaseDatabase = FirebaseDatabase.getInstance();
                                         mReference = mFirebaseDatabase.getReference("user-data").child(mAuth.getCurrentUser().getUid());
                                         UserModel model = new UserModel();
+
+                                        // Writing into firebase database
                                         model.setEmail(email);
                                         model.setUsername(username);
                                         model.setTelephone(phoneNumber);
@@ -137,8 +139,8 @@ public class SignUpFragment extends Fragment {
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                        Toast.makeText(view.getContext(), "Authentication failed. " + task.getException(),
-                                                Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(view.getContext(), "Authentication failed.\n" + task.getException(),
+                                                Toast.LENGTH_LONG).show();
                                         hideProgressBar();
                                     }
                                 }

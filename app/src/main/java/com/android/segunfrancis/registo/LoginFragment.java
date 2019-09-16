@@ -1,6 +1,5 @@
 package com.android.segunfrancis.registo;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,12 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.FirebaseUserMetadata;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class LoginFragment extends Fragment {
 
     private static final String TAG = "LoginFragment";
@@ -54,9 +48,9 @@ public class LoginFragment extends Fragment {
         Button loginButton = view.findViewById(R.id.sign_in_button);
         pb = view.findViewById(R.id.login_progress_bar);
 
-        Utils.checkPasswordLength(passwordET, passwordETLayout);
+        Utils.checkPasswordLength(passwordET, passwordETLayout, view.getContext());
 
-
+        // User Sign In
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -80,8 +74,7 @@ public class LoginFragment extends Fragment {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
                                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                        FirebaseUserMetadata metadata = FirebaseAuth.getInstance().getCurrentUser().getMetadata();
-                                        Toast.makeText(view.getContext(), "Signed in as " + user.getUid(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(view.getContext(), "Signed in as " + user.getEmail(), Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(view.getContext(), DashboardActivity.class);
                                         view.getContext().startActivity(intent);
                                         ((Activity)(view.getContext())).finish();
@@ -89,8 +82,8 @@ public class LoginFragment extends Fragment {
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                        Toast.makeText(view.getContext(), "Authentication failed. " + task.getException(),
-                                                Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(view.getContext(), "Authentication failed.\n" + task.getException(),
+                                                Toast.LENGTH_LONG).show();
                                         hideProgressBar();
                                     }
                                 }
